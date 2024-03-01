@@ -37,6 +37,7 @@ float[] positionsZ = new float[n];
 float[] velocitiesX = new float[n];
 float[] velocitiesY = new float[n];
 float[] velocitiesZ = new float[n];
+float[] betas = new float[n];
 
 void setup() {
   size(640, 640, P3D);
@@ -62,6 +63,7 @@ void setup() {
   velocitiesX = new float[n];
   velocitiesY = new float[n];
   velocitiesZ = new float[n];
+  betas = new float[n];
 
   for (int i=0; i<n; i++) {
     colors[i] = floor(random(1.0)*m);
@@ -71,14 +73,30 @@ void setup() {
     velocitiesX[i] = 0;
     velocitiesY[i] = 0;
     velocitiesZ[i] = 0;
+    betas[i] = random(1.0);
   }
 }
 
-float force(float r, float a) {
-  final float beta = 0.3;
-  if      (r<beta)        return r/beta-1;
-  else if (r>beta && r<1) return a*(1-abs(2*r-1-beta)/(1-beta));
-  else                    return 0;
+//float force(float r, float a) {
+//  final float beta = 0.3;
+//  if      (r<beta)        return r/beta-1;
+//  else if (r>beta && r<1) return a*(1-abs(2*r-1-beta)/(1-beta));
+//  else                    return 0;
+//}
+
+float force(float r, float a, float beta) {
+  //final float beta = 0.5;
+  if (r < .1)
+    return -3;
+  else
+    if (r < beta)
+      //return r / beta - 1;
+      //return -1 / r;
+      return -(beta-r) / ((3*r)/beta);
+    else if (r > beta && r < 1)
+      return a * (1 - abs(2 * r - 1 - beta) / (1 - beta));
+    else
+      return 0;
 }
 
 void updateParticles() {
@@ -119,24 +137,18 @@ void updateParticles() {
 
     // Add wrap-around queries if wrap is enabled
     if (wrap) {
-      if (positionsX[i] - rMax < 0) {
+      if (positionsX[i] - rMax < 0)
         queryRanges.add(new Volume(positionsX[i] - rMax + 1, positionsY[i] - rMax, positionsZ[i] - rMax, rMax * 2, rMax * 2, rMax * 2));
-      }
-      if (positionsX[i] + rMax > 1) {
+      else if (positionsX[i] + rMax > 1)
         queryRanges.add(new Volume(positionsX[i] - rMax - 1, positionsY[i] - rMax, positionsZ[i] - rMax, rMax * 2, rMax * 2, rMax * 2));
-      }
-      if (positionsY[i] - rMax < 0) {
+      if (positionsY[i] - rMax < 0)
         queryRanges.add(new Volume(positionsX[i] - rMax, positionsY[i] - rMax + 1, positionsZ[i] - rMax, rMax * 2, rMax * 2, rMax * 2));
-      }
-      if (positionsY[i] + rMax > 1) {
+      else if (positionsY[i] + rMax > 1)
         queryRanges.add(new Volume(positionsX[i] - rMax, positionsY[i] - rMax - 1, positionsZ[i] - rMax, rMax * 2, rMax * 2, rMax * 2));
-      }
-      if (positionsZ[i] - rMax < 0) {
+      if (positionsZ[i] - rMax < 0)
         queryRanges.add(new Volume(positionsX[i] - rMax, positionsY[i] - rMax, positionsZ[i] - rMax + 1, rMax * 2, rMax * 2, rMax * 2));
-      }
-      if (positionsZ[i] + rMax > 1) {
+      else if (positionsZ[i] + rMax > 1)
         queryRanges.add(new Volume(positionsX[i] - rMax, positionsY[i] - rMax, positionsZ[i] - rMax - 1, rMax * 2, rMax * 2, rMax * 2));
-      }
     }
 
     // Perform the multi-query
@@ -161,7 +173,8 @@ void updateParticles() {
 
       float r  = sqrt(rx*rx + ry*ry + rz*rz);
       if (r > 0 && r < rMax) {
-        float f = force(r / rMax, matrix[colors[i]][colors[p.index]]);
+        //float f = force(r / rMax, matrix[colors[i]][colors[p.index]]);
+        float f = force(r / rMax, matrix[colors[i]][colors[p.index]], betas[i]);
         totalForceX += rx/r*f;
         totalForceY += ry/r*f;
         totalForceZ += rz/r*f;
