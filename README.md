@@ -18,6 +18,8 @@ With just this one simple rule really cool stuff can happen! :D
 
 ### Optimized with Quadtree
 
+![quadtree](./quadtree.gif)  
+
 ## Controls
 
 ### Keybinds
@@ -47,7 +49,7 @@ With just this one simple rule really cool stuff can happen! :D
 
 ## Sliders
 
-![7 by 7 matrix](./slider.gif)
+![sliders](./slider.gif)
 
 You can use the mouse to drag sliders or use their associated keys.  
 
@@ -55,6 +57,7 @@ You can use the mouse to drag sliders or use their associated keys.
 - **m (Types)** - `,` / `.` - Number of different particle types (colors)  
 - **rMax (Interaction Radius)** - `↑` / `↓` - Maximum distance particles can interact
 - **forceFactor (Force Strength)** - `←` / `→` - Multiplier for all interaction forces
+
 
 
 
