@@ -47,10 +47,13 @@ With just this one simple rule really cool stuff can happen! :D
 
 ## Sliders
 
-You can use the mouse to drag sliders or use their associated keys.
+![7 by 7 matrix](./sliders.gif)
 
-- **n (Particles)** - `-` / `=` - Total number of particles in the simulation
+You can use the mouse to drag sliders or use their associated keys.  
+
+- **n (Particles)** - `-` / `=` - Total number of particles in the simulation (changing n resets the simulation)  
 - **m (Types)** - `,` / `.` - Number of different particle types (colors)  
 - **rMax (Interaction Radius)** - `↑` / `↓` - Maximum distance particles can interact
 - **forceFactor (Force Strength)** - `←` / `→` - Multiplier for all interaction forces
+
 
